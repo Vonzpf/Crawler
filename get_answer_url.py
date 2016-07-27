@@ -1,9 +1,11 @@
-#coding=utf-8
+#coding:utf-8
 
 import urllib
 import re
-# from docx import Document
-# from docx.shared import Inches
+from bs4 import BeautifulSoup
+from bs4.builder._htmlparser import BeautifulSoupHTMLParser
+from docx import Document
+from docx.shared import Inches
 
 def getHtml(url):
     page = urllib.urlopen(url)
@@ -14,14 +16,24 @@ def geturl(html):
     reg = r'data-entry-url=".+"'
     urlre = re.compile(reg)
     urllist = re.findall(urlre,html)
+    x=0
     for answerurl in urllist:
         urlsplited = answerurl.split('"')
-        fullurl = 'https://www.zhihu.com' + urlsplited[1]
-        txtfile = open(r'D:\\1.txt','a')
-        # urllib.urlretrieve(answerurl,'%s.doc' % x)
-        txtfile.write(fullurl+'\n')
-        # x+=1
-        txtfile.close()
+        fullurl = 'https://www.zhihu.com' + urlsplited[1]   #获取完整的答案URL
+        
+        answerpage = urllib.urlopen(fullurl)
+        answerhtml = answerpage.read()
+        
+        soup = BeautifulSoup(answerhtml,"lxml")
+        a_tag = soup.find("div", class_="zm-editable-content clearfix")
+        answer = a_tag.get_text()
+        #获取答案
+        
+        document = Document()
+        document.add_paragraph(answer)
+        document.add_page_break()
+        document.save('d:\%s.docx' %x)
+        x = x + 1
 
 html = getHtml("https://www.zhihu.com/collection/47588314?page=1")
 
