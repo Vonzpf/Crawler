@@ -26,6 +26,10 @@ def geturl(html):
         
         soup = BeautifulSoup(answerhtml,"lxml")
         a_tag = soup.find("div", class_="zm-editable-content clearfix")
+        while(a_tag.find_all("noscript")):
+            a_tag.noscript.extract()()
+        while(a_tag.find_all("br")):
+            a_tag.br.decompose()
         answer = a_tag.prettify()
         #获取答案
         
