@@ -13,7 +13,7 @@ def geturl(urllist):
         
     soup = BeautifulSoup(answerhtml,"lxml")
     a_tag = soup.find("div", class_="zm-editable-content clearfix")
-    answer = a_tag.get_text()
+    answer = a_tag.prettify()
     #获取答案
     #print(a_tag.original_encoding)
     
@@ -22,5 +22,5 @@ def geturl(urllist):
     document.add_page_break()
     document.save('d:\demo.docx')
     
-urllist = "https://www.zhihu.com/question/48050670/answer/112734847"
+urllist = "https://www.zhihu.com/question/48635051/answer/113194472"
 geturl(urllist)
