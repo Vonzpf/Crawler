@@ -14,9 +14,13 @@ def geturl(urllist):
     soup = BeautifulSoup(answerhtml,"lxml")
     a_tag = soup.find("div", class_="zm-editable-content clearfix")
     while(a_tag.find_all("noscript")):
-        a_tag.noscript.extract()()
+        a_tag.noscript.extract()
     while(a_tag.find_all("br")):
         a_tag.br.decompose()
+    while(a_tag.find_all("b")):
+        a_tag.b.unwrap()
+    while(a_tag.find_all("u")):
+        a_tag.u.unwrap()
     answer = a_tag.prettify()
     #获取答案
     #print(a_tag.original_encoding)
@@ -26,5 +30,5 @@ def geturl(urllist):
     document.add_page_break()
     document.save('d:\demo.docx')
     
-urllist = "https://www.zhihu.com/question/48635051/answer/113194472"
+urllist = "https://www.zhihu.com/question/30285168/answer/110433971"
 geturl(urllist)
